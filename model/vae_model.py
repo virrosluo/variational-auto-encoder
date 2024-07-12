@@ -32,17 +32,7 @@ class VAE(nn.Module):
         self.log_scale = nn.Parameter(torch.Tensor([0.0]))
 
     def sampling_z_value(self, mu: torch.Tensor, log_var: torch.Tensor):
-        '''
-            Sampling Z value from q(Z | X) ~ Normal(Z, (mu(X), var(X)))
-        '''
-
-        std = torch.exp(log_var)
-
-        #
-        q = torch.distributions.Normal(mu, std)
-        z = q.rsample()
-
-        return z
+        pass
 
     def kl_divergence_loss(
         self, 
@@ -89,3 +79,30 @@ class VAE(nn.Module):
 
         log_pxz = dist.log_prob(sample)
         return log_pxz.sum()
+
+class NonReparameterizeVAE(VAE):
+    def sampling_z_value(self, mu: torch.Tensor, log_var: torch.Tensor):
+        '''
+            Sampling Z value from q(Z | X) ~ Normal(Z, (mu(X), var(X))) using non-reparameterization trick
+        '''
+
+        std = torch.exp(log_var)
+
+        #
+        q = torch.distributions.Normal(mu, std)
+        z = q.rsample()
+
+        return z
+
+class ReparameterizeVAE(VAE):
+    def sampling_z_value(self, mu: torch.Tensor, log_var: torch.Tensor):
+        '''
+            Sampling Z value from q(Z | X) ~ Normal(Z, (mu(X), var(X))) using reparameterization trick
+        '''
+
+        std = torch.exp(log_var)
+
+        noise = torch.distributions.Normal(torch.zeros_like(mu), torch.ones_like(std))
+        z = mu + std * noise
+        
+        return z

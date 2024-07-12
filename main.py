@@ -25,10 +25,16 @@ def main():
     dataLoader = get_cifar10_loader(data_args)
 
 # ------------------------------------------------------ MODEL PREPARATION
-    model = vae_model.VAE(
-        enc_out_dim=model_args.encoder_output_dim,
-        latent_dim=model_args.latent_dim,
-    )
+    if model_args.use_reparameterization_trick:
+        model = vae_model.ReparameterizeVAE(
+            enc_out_dim=model_args.encoder_output_dim,
+            latent_dim=model_args.latent_dim,
+        )
+    else:
+        model = vae_model.NonReparameterizeVAE(
+            enc_out_dim=model_args.encoder_output_dim,
+            latent_dim=model_args.latent_dim,
+        )
 
     training_model = lightning_model.vae_lightning(model)
 
