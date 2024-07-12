@@ -1,0 +1,9 @@
+__pycache__/
+.lightning_studio/
+data_download/
+training_log/
+
+.idea/
+.vscode-server/
+.vscode/
+.wget-hsts

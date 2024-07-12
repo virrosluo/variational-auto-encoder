@@ -1,0 +1,13 @@
+{
+    "encoder_output_dim": 512,
+    "latent_dim": 256,
+
+    "data_dir": "data_download",
+    "train_batch_size": 256,
+    "test_batch_size": 512,
+
+    "default_root_dir": "training_log",
+    "max_epochs": 10,
+    "check_val_every_n_epoch": 1,
+    "val_check_interval": 0.2
+}
