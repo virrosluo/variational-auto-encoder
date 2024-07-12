@@ -36,7 +36,7 @@ class VAE(nn.Module):
             Sampling Z value from q(Z | X) ~ Normal(Z, (mu(X), var(X)))
         '''
 
-        std = torch.exp(log_var / 2)
+        std = torch.exp(log_var)
 
         #
         q = torch.distributions.Normal(mu, std)

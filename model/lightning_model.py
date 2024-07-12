@@ -20,11 +20,11 @@ class vae_lightning(L.LightningModule):
         regenerate_img = self.model.decoder(z_sample)
         recon_loss = self.model.reconstruct_loss(regenerate_img, self.model.log_scale, x)
 
-        minus_elbo = (kl - recon_loss).mean()
+        minus_elbo = (kl_loss - recon_loss).mean()
 
         self.log_dict({
             'elbo': minus_elbo,
-            'kl': kl.mean(),
+            'kl': kl_loss.mean(),
             'recon_loss': recon_loss.mean()
         })
         return minus_elbo
