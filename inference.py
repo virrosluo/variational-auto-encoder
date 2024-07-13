@@ -32,7 +32,7 @@ def main():
 # ------------------------------------------------------ DATALOADER PREPARATION
     data_config = DataConfig(
         data_dir="data_download",
-        test_batch_size=1024
+        test_batch_size=16
     )
 
     dataLoader = get_cifar10_loader(data_config)
@@ -64,16 +64,23 @@ def main():
     figure(figsize=(8, 3), dpi=300)
     normalize = cifar10_normalization()
     mean, std = np.array(normalize.mean), np.array(normalize.std)
-    origin_imgs = make_grid(output[0].input_image).permute(1, 2, 0).numpy() * std + mean
-
+    origin_imgs = np.clip(
+        make_grid(output[0].input_image).permute(1, 2, 0).numpy() * std + mean,
+        a_min=0.,
+        a_max=1.,
+    )
 
     figure(figsize=(8, 3), dpi=300)
     normalize = cifar10_normalization()
     mean, std = np.array(normalize.mean), np.array(normalize.std)
-    reconstruct_imgs = make_grid(output[0].reconstruct_image).permute(1, 2, 0).numpy() * std + mean
+    reconstruct_imgs = np.clip(
+        make_grid(output[0].reconstruct_image).permute(1, 2, 0).numpy() * std + mean,
+        a_min=0.,
+        a_max=1.,
+    )
 
-    imgshow(origin_imgs)
-    imgshow(reconstruct_imgs)
+    imshow(origin_imgs)
+    imshow(reconstruct_imgs)
 
 if __name__ == "__main__":
     main()
