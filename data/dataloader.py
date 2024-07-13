@@ -5,10 +5,17 @@ import torch
 
 from data.config import DataConfig
 
+def cifar10_normalization():
+    normalizer = transforms.Normalize(
+            mean=[x / 255.0 for x in [125.3, 123.0, 113.9]],
+            std=[x / 255.0 for x in [63.0, 62.1, 66.7]],
+        )
+    return normalizer
+
 def get_cifar10_loader(data_config: DataConfig):
     transform_pipeline = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        cifar10_normalization()
     ])
 
     trainset = torchvision.datasets.CIFAR10(

@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Any
 
 @dataclass
 class ModelConfig:
@@ -22,3 +23,11 @@ class ModelConfig:
             'help': 'Output dimensions of the resnet18 decoder'
         }
     )
+
+@dataclass
+class PredictionOutput:
+    elbo: Any
+    kl_loss: Any
+    recon_loss: Any
+    input_image: Any
+    reconstruct_image: Any

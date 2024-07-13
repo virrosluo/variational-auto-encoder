@@ -87,8 +87,6 @@ class NonReparameterizeVAE(VAE):
         '''
 
         std = torch.exp(log_var)
-
-        #
         q = torch.distributions.Normal(mu, std)
         z = q.rsample()
 
@@ -103,6 +101,6 @@ class ReparameterizeVAE(VAE):
         std = torch.exp(log_var)
 
         noise = torch.distributions.Normal(torch.zeros_like(mu), torch.ones_like(std))
-        z = mu + std * noise
+        z = mu + std * noise.rsample()
         
         return z
